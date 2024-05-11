@@ -1,0 +1,54 @@
+---
+import { getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import MySignature from "../components/MySignature.astro";
+import PostListItem from "../components/PostListItem.astro";
+
+const posts = await getCollection("blog");
+posts.sort((a, b) => {
+  if (a.data.pubDate && b.data.pubDate) {
+    return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  }
+  return 0;
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      .wrapper {
+        width: 783px;
+      }
+      .main {
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <Header /> -->
+    <main class="main">
+      <section class="wrapper">
+        <MySignature />
+        <section class="posts">
+          <ul>
+            {
+              posts.map((post) => (
+                <PostListItem
+                  description={post.data.description}
+                  url={`/blog/${post.slug}`}
+                  title={post.data.title}
+                  pubDate={post.data.pubDate}
+                  updateDate={post.data.updatedDate}
+                />
+              ))
+            }
+          </ul>
+        </section>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>

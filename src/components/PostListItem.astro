@@ -1,0 +1,43 @@
+---
+import FormattedDate from './FormattedDate.astro';
+interface Props {
+  url: string;
+  title: string;
+  pubDate: Date;
+  description: string;
+  updateDate: Date | undefined;
+}
+
+const { url, title, pubDate, updateDate, description } = Astro.props;
+---
+
+<li class="post-list-item">
+  <a href={url}>
+    <h3>{title}</h3>
+  </a>
+  <p class="light-font">{description}</p>
+  <span class="small secondary-font">提交与<FormattedDate date={pubDate}/></span>
+  {
+    updateDate && <span class="small secondary-font">更新与<FormattedDate date={updateDate}/></span> 
+  }
+</li> 
+
+<style>
+  li {
+    list-style: none;
+    margin-bottom: 2rem;
+    .post {
+      margin: 1.5rem 0rem;
+      padding: 0.5rem;
+    }
+    a {
+      font-weight: normal;
+      letter-spacing: 0.1em;
+    }
+  }
+  .small {
+    font-size: small;
+    margin-right: 1rem;
+    letter-spacing: 0.1em;
+  }
+</style>

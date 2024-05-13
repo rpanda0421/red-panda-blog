@@ -12,13 +12,13 @@ const { url, title, pubDate, updateDate, description } = Astro.props;
 ---
 
 <li class="post-list-item">
-  <a href={url}>
-    <h3>{title}</h3>
+  <a class="black" href={url}>
+    {title}
   </a>
-  <p class="light-font">{description}</p>
-  <span class="small secondary-font">提交与<FormattedDate date={pubDate}/></span>
+  <p class="f-minor description">{description}</p>
+  <span class="small f-minor">提交与<FormattedDate date={pubDate}/></span>
   {
-    updateDate && <span class="small secondary-font">更新与<FormattedDate date={updateDate}/></span> 
+    updateDate && <span class="small secondary-font">&更新与<FormattedDate date={updateDate}/></span> 
   }
 </li> 
 
@@ -32,6 +32,7 @@ const { url, title, pubDate, updateDate, description } = Astro.props;
     }
     a {
       font-weight: normal;
+      font-size: 2.75rem;
       letter-spacing: 0.1em;
     }
   }
@@ -39,5 +40,10 @@ const { url, title, pubDate, updateDate, description } = Astro.props;
     font-size: small;
     margin-right: 1rem;
     letter-spacing: 0.1em;
+  }
+  .description {
+    margin-block-start: 0.3rem;
+    margin-block-end: 0.1rem;
+    font-size: 1.2rem;
   }
 </style>

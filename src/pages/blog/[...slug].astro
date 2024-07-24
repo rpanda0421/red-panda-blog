@@ -1,20 +1,107 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
-
+import { type CollectionEntry, getCollection } from "astro:content";
+import BasePageLayout from "@layouts/responsive-layout/BasePageLayout.astro";
+import { SIT_NAVIGATIONS } from "../../consts";
+import { formalizeDate } from "@utils/time";
+import { Image } from "astro:assets";
+import { getColorFromImage } from "@utils/theme";
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
+	const posts = await getCollection("blog");
 	return posts.map((post) => ({
 		params: { slug: post.slug },
 		props: post,
 	}));
 }
-type Props = CollectionEntry<'blog'>;
+type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
-const { Content } = await post.render();
+// const path = Astro.url.pathname
+const { Content, headings } = await post.render();
+const filteredHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+// @ts-ignore
+const color = await getColorFromImage(post.data.cover.fsPath)
 ---
 
-<BlogPost {...post.data}>
-	<Content />
-</BlogPost>
+<BasePageLayout
+	navigations={{
+		site: SIT_NAVIGATIONS,
+		extraNasigation: SIT_NAVIGATIONS.slice(0, 2),
+	}}
+	title={post.data.title}
+	description={post.data.description}
+	sourceColor={color}
+>
+	<Fragment slot="side-page-nav">
+		<div class="mt-16 secondary">目录</div>
+		{
+			filteredHeadings.map((h) => (
+				<a
+					class="text-sm w-full"
+					class:list={{ "pl-3": h.depth === 2, "pl-6": h.depth === 3 }}
+					href={`${Astro.url.pathname}#${h.slug}`}
+				>
+					<s-ripple class="mt-1 mb-1 p-1 pl-3 pr-3 rounded-full w-full">
+						{h.text}
+					</s-ripple>
+				</a>
+			))
+		}
+	</Fragment>
+	<Fragment slot="side-page-nav-mobile">
+		<div class="mt-8 primary">目录</div>
+		{
+			filteredHeadings.map((h) => (
+				<a
+					class="text-sm w-full"
+					class:list={{ "pl-3": h.depth === 2, "pl-6": h.depth === 3 }}
+					href={`${Astro.url.pathname}#${h.slug}`}
+				>
+					<s-ripple class="mt-2 mb-2 p-1 pl-3 pr-3 rounded-full w-full">
+						{h.text}
+					</s-ripple>
+				</a>
+			))
+		}
+	</Fragment>
+	<div class="blog-wrapper flex flex-col items-center">
+		<Image src={post.data.cover} alt='alt' />
+		<div class="blog-title mt-6 mb-24">
+			<h1 class="text-7xl primary">{post.data.title}</h1>
+			<span>
+				<data>{formalizeDate(post.data.pubDate, false, "long")}</data>
+				<data class="ml-8"
+					>{
+						post.data.updatedDate &&
+							formalizeDate(post.data.updatedDate, false, "long")
+					}</data
+				>
+			</span>
+		</div>
+		<div class="blog-content entry heti heti-cust">
+			<Content />
+		</div>
+	</div>
+</BasePageLayout>
+
+<script>
+	import "sober/ripple";
+</script>
+
+<style lang="less">
+	.blog-wrapper {
+		max-width: 100%;
+		width: 768px;
+		margin-inline-start: 6.67rem;
+		@media screen and (max-width: 960px) {
+			padding: 8px;
+			margin-inline-start: 0px;
+		}
+	}
+	img {
+		margin-top: 1rem;
+		width: 96%;
+		max-height: 256px;
+		object-fit: cover;
+		border-radius: 17.7px;
+	}
+</style>

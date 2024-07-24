@@ -1,0 +1,232 @@
+---
+import { Image } from "astro:assets";
+import { formalizeDate } from "../../utils/time";
+interface BlogDate {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updateDate?: Date;
+  cover: {
+    src: string;
+    width: number;
+    height: number;
+    format: "png" | "jpg" | "jpeg" | "tiff" | "webp" | "gif" | "svg" | "avif";
+  };
+  slug: string;
+}
+
+interface Props {
+  type: "big" | "medium" | "small";
+  blogDate: BlogDate;
+}
+
+const { type = "medium", blogDate } = Astro.props;
+---
+
+<a
+  href={blogDate.slug}
+  class:list={[`blog-list-item--${type}`, "blog-list-item"]}
+>
+  <div class="img-container">
+    <Image src={blogDate.cover} alt="alt" />
+    <div class="link-indication">
+      <i
+        data-feather="chevrons-right"
+        class="icon inline align-text-top w-12 h-12"></i>
+    </div>
+  </div>
+  <div class="content">
+    <div
+      class:list={[
+        { "text-6xl": type == "big", "text-2xl": type == "medium" },
+        "title",
+        " font-light",
+      ]}
+    >
+      {blogDate.title}
+    </div>
+    <p class:list={{ "text-base": type == "big", "text-sm": type == "medium" }}>
+      {blogDate.description}
+    </p>
+    <span
+      class:list={{ "text-sm": type == "medium" }}
+      class="ship ship-date flex items-center"
+    >
+      <i data-feather="calendar" class="inline icon"></i>
+      {formalizeDate(blogDate.pubDate, false, "short")}</span
+    >
+  </div>
+</a>
+
+<style lang="less">
+  a {
+    text-decoration: none;
+    color: var(--md-sys-color-on-surface);
+  }
+
+  .blog-list-item {
+    display: flex;
+    position: relative;
+    border-radius: 17.7px;
+    max-width: 100%;
+    background-color: var(--s-color-surface-container-low);
+
+    &--big {
+      flex-direction: row-reverse;
+      flex-wrap: nowrap;
+      width: 100%;
+      justify-content: space-around;
+      align-items: start;
+      color: var(--md-sys-color-on-surface);
+      margin: 8px;
+      padding-block: 2rem;
+      .title {
+        color: var(--s-color-primary);
+      }
+      p {
+        padding-inline-start: 2rem;
+        margin-top: 2rem;
+        /* font-size: 12px; */
+      }
+      .img-container {
+        flex-basis: 27%;
+        position: relative;
+      }
+      img {
+        object-fit: cover;
+        border-radius: 999px;
+        width: 100%;
+        // height: %;
+      }
+      .content {
+        position: relative;
+        // padding: 16px 16px calc(16px + 1rem) 16px;
+        padding-bottom: 3.5rem;
+        flex-basis: 50%;
+      }
+
+      .ship {
+        background-color: var(--s-color-tertiary);
+        color: var(--s-color-on-tertiary);
+        border-radius: 999px;
+        padding-inline: 0.5rem;
+        padding-block: 0.25rem;
+      }
+      .ship-date {
+        position: absolute;
+        bottom: 8px;
+      }
+      .link-indication {
+        top: 0px;
+        position: absolute;
+        background-color: var(--s-color-primary);
+        color: var(--s-color-on-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        border-radius: 999px;
+        opacity: 0;
+        transition:
+          opacity,
+          0.3s ease-in;
+        .icon {
+          transition:
+            width 0.3s,
+            height 0.3s;
+          stroke-width: 3;
+        }
+      }
+      &:hover .link-indication {
+        opacity: 1;
+      }
+      &:hover .link-indication .icon {
+        width: 5rem;
+        height: 5rem;
+      }
+      @media screen and (max-width: 989px) {
+        flex-wrap: wrap;
+        padding: 8px;
+        :is(.content, .img-container) {
+          flex-basis: 100%;
+        }
+        .img-container {
+          max-height: 233px;
+          img {
+            max-height: 233px;
+          }
+          margin-bottom: 2rem;
+        }
+      }
+    }
+    &--medium {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      overflow: hidden;
+      width: 317px;
+      max-width: 100%;
+      height: 321px;
+      .content {
+        padding-block: 2rem;
+        padding-inline: 2rem;
+      }
+      p {
+        text-overflow: ellipsis;
+      }
+
+      .img-container {
+        position: relative;
+        border-top-left-radius: 17.5px;
+        border-top-right-radius: 17.5px;
+        overflow: hidden;
+        height: 142px;
+        img {
+          object-fit: cover;
+          height: 100%;
+          width: 100%;
+          transition: scale, 0.3s;
+        }
+      }
+      &:hover {
+        img {
+          transform: scale(1.1);
+        }
+      }
+      .ship {
+        padding-inline: 0.25rem;
+        padding-block: 0.2rem;
+        .icon {
+          width: 0.75rem;
+          height: 0.75rem;
+        }
+      }
+      .ship-date {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+      }
+      .link-indication {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        .icon {
+          color: white;
+          width: 24px;
+          height: 24px;
+        }
+      }
+      @media screen and (max-width: 989px) {
+        width: 100%;
+        height: 321px;
+        .img-container {
+          height: 176px;
+        }
+        .title {
+          margin-block-end: 0.75rem;
+        }
+      }
+    }
+  }
+  /* TODO medium 响应式 */
+</style>

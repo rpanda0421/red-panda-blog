@@ -1,0 +1,13 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"section">;
+
+const { class: className, ...props } = Astro.props;
+---
+
+<section class="blog-signature" class:list={[className]} {...props}>
+</section>
+
+<style>
+</style>

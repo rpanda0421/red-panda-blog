@@ -1,0 +1,138 @@
+---
+// This layout component represents a responsive header and sidebar template.
+// It imports BaseHead component to set the title and description of the page.
+// Props:
+//   - title: string - the title of the page
+//   - description: string - the description of the page
+
+import BaseHead from "@components/BaseHead.astro";
+import Header from "@components/page-elements/Header.astro";
+import SideNav from "@components/page-elements/Rail.astro";
+import SideScrollView from "@components/page-elements/SideScrollView.astro";
+import generateThemes from "@utils/theme";
+
+interface Props {
+  title: string;
+  description: string;
+  sidebarWidth: string;
+  sourceColor?: string | number;
+  noScrollSide?: boolean;
+}
+
+const { title, description, sidebarWidth, sourceColor='#009688', noScrollSide=false } = Astro.props;
+const sDrawerFold = 840;
+
+const bodyStyles = generateThemes(sourceColor);
+const bodyStyle = bodyStyles.length > 0 ? bodyStyles[0] : "";
+---
+
+<html lang="zh-cn">
+  <head>
+    <BaseHead title={title} , description={description} />
+  </head>
+
+  <body style={bodyStyle}>
+    <s-drawer fold={sDrawerFold} id="#my-page-drawer-container">
+      <div slot="start" class="z-30 side-nav-container">
+        <a
+          aria-label="skip to main content"
+          class="skip-link"
+          href="/#main_content"
+        >
+        </a>
+        <div
+          class="side-content flex-row flex-nowrap w-full h-full items-stretch"
+        >
+          <SideNav>
+            <slot name="side" />
+          </SideNav>
+          <SideScrollView hidden={noScrollSide}>
+            <slot name="side-scroll-view" />
+          </SideScrollView>
+        </div>
+        <div>
+          <slot name="side-content-float-mode" />
+        </div>
+      </div>
+
+      <div class="z-0 main-container">
+        <Header drawerId="#my-page-drawer-container">
+          <slot name="header" />
+        </Header>
+        <s-scroll-view class="main-scroll-container">
+          <slot name="main" />
+          <slot name="footer" />
+        </s-scroll-view>
+        <div class="bottom-docker">
+          <div
+            class="bottom-docker-content flex flex-row flex-nowrap rounded-full"
+          >
+            <slot name="bottom-docker" />
+          </div>
+        </div>
+      </div>
+    </s-drawer>
+    <script>
+      import "sober/drawer";
+      import "sober/scroll-view";
+      import "sober/page";
+      import "sober/navigation";
+      import "sober/icon";
+      import "sober/ripple";
+    </script>
+
+    <style
+      lang="less"
+      define:vars={{ sidebarWidth, sDrawerFold: sDrawerFold + "px" }}
+    >
+      .side-nav-container {
+        width: var(--sidebarWidth);
+      background-color: var(--s-color-surface-container-high);
+        @media screen and (max-width: 840px) {
+          width: 100%;
+        }
+      }
+      .side-content {
+        @media screen and (max-width: 840px) {
+          display: none;
+        }
+        display: flex;
+      }
+      .side-content-float-mode {
+        @media screen and (max-width: 840px) {
+          display: flex;
+        }
+        display: none;
+      }
+      .bottom-docker {
+        height: 60px;
+        width: 100%;
+        display: none;
+        position: absolute;
+        bottom: 8px;
+        padding-inline: 1rem;
+        &-content {
+          background-color: var(--s-color-surface-container-high);
+          width: 100%;
+        }
+        @media screen and (max-width: 673px) {
+          display: flex;
+        }
+      }
+      .main-container {
+        background-color: var(--s-color-surface-container-high);
+        padding-bottom: 1rem;
+      }
+      .main-scroll-container {
+        width: 100%;
+        height: calc(100vh - 65px - 1rem);
+        max-width: 100%;
+        border-radius: 17.7px;
+        background-color: var(--s-color-surface-container-lowest);
+        @media screen and (max-width: 840px) {
+          padding-bottom: 90px;
+        }
+      }
+    </style>
+  </body>
+</html>

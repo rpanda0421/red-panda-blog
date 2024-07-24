@@ -1,0 +1,43 @@
+---
+const { class: className, ...rest } = Astro.props;
+---
+
+<header id="banner" class:list={[className]} {...rest}>
+  <div class="header-content flex flex-row flex-nowrap items-center justify-center">
+    <slot/>
+  </div>
+</header>
+<style>
+  header {
+    background-color: var(--s-color-surface-container-height);
+    width: 100%;
+    padding: 4px 4px 0 4px;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 50;
+  }
+  .header-content {
+    padding-inline: 1.75rem 1.75rem;
+    border-radius: 1.75rem;
+    height: 3.5rem;
+    background-color: var(--md-sys-color-surface-1);
+    color: var(--md-sys-color-on-surface);
+    transition:
+      box-shadow 0.1s,
+      max-width 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    width: 100%;
+    max-width: 1760px;
+  }
+  header.is-sticky .header-content {
+    box-shadow: var(--md-sys-elevation-1);
+    background-color: var(--md-sys-color-surface-2);
+    /* width: 781px; */
+    max-width: 1080px;
+  }
+  img {
+    width: 1.5rem;
+  }
+</style>

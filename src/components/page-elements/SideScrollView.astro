@@ -1,0 +1,24 @@
+---
+// import { Link } from "astro";
+interface Props {
+  hidden?: boolean
+}
+const { hidden = false } = Astro.props
+---
+
+<s-scroll-view
+  class="side-scroll-view ml-2 flex flex-col flex-nowrap gap-1 w-full"
+  class:list={{'hidden': hidden}}
+>
+  <slot/>
+</s-scroll-view>
+
+<style>
+  .side-scroll-view {
+    border-left: 1px solid rgba(var(--s-color-outline-rgb), 0.12);
+    /* overflow-x: hidden; */
+    padding-left: 0.5rem;
+    padding-right: 0.25rem;
+  }
+
+</style>

@@ -1,13 +1,20 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import BasePageLayout from "@layouts/responsive-layout/BasePageLayout.astro";
+import { SIT_NAVIGATIONS } from "src/consts";
+
 ---
 
-<Layout
-	title="关于"
-	description="--"
-	pubDate={new Date('April 22 2024')}
+<BasePageLayout 
+navigations={{
+  site: SIT_NAVIGATIONS,
+  extraNasigation: SIT_NAVIGATIONS.slice(0, 2),
+}}
+title="About"
+description="About SIT"
+noScrollSide
 >
-	<p>
-    普通的人，普通的博客
-  </p>
-</Layout>
+<div class="flex flex-col items-center">
+  <h1 class="text-5xl mb-7">About</h1>
+  <p>普通的博客</p>
+</div>
+</BasePageLayout>

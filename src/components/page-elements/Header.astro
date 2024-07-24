@@ -1,0 +1,38 @@
+---
+interface Props {
+  drawerId: string;
+}
+const { drawerId } = Astro.props;
+---
+
+<s-appbar class="header">
+  <s-icon-button class="lg:hidden" data-drawer-id={drawerId} id="menu-switch" slot="navigation">
+    <s-icon type="menu"></s-icon>
+  </s-icon-button>
+  <div slot="headline"><span class="text-2xl" style="color: var(--s-color-primary);">Red Pand</span></div>
+</s-appbar>
+
+<script>
+  import "sober/appbar";
+  import "sober/icon";
+  import "sober/icon-button";
+  import { type Drawer } from "sober/drawer";
+
+  (function () {
+    const appbarMenuButtom = document.getElementById("menu-switch");
+    if (!appbarMenuButtom) return;
+    const drawerId = appbarMenuButtom.dataset.drawerId;
+    if (!drawerId) return;
+    const drawer = document.getElementById(drawerId) as Drawer;
+    if (!drawer) return;
+    appbarMenuButtom.addEventListener("click", () => {
+      drawer.toggle();
+    });
+  })();
+</script>
+
+<style>
+.header {
+  background-color: var(--s-color-surface-container-high);
+}
+</style>

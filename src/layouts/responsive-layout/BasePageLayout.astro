@@ -1,0 +1,150 @@
+---
+import ResponsiveHeaderAndSidebarTemp from "./ResponsiveHeaderAndSidebarTemp.astro";
+import RailLink from "../../components/page-elements/RailLink.astro";
+import * as Consts from "../../consts";
+import SideTabs from "@components/page-elements/SideTabs.vue";
+
+interface NavigationObject {
+  name: string;
+  href: string;
+}
+
+interface IconNavigationObject extends NavigationObject {
+  iconName: string;
+}
+
+interface PageMenuObject {
+  category: string;
+  navigations: Array<NavigationObject>;
+}
+
+export interface MenuPropObject {
+  page?: Array<PageMenuObject>;
+  site: Array<IconNavigationObject>;
+  extraNasigation?: Array<IconNavigationObject>;
+}
+
+interface Props {
+  navigations: MenuPropObject;
+  title?: string;
+  description?: string;
+  sourceColor?: string | number;
+  noScrollSide?: boolean;
+}
+
+const {
+  navigations,
+  title,
+  description,
+  sourceColor,
+  noScrollSide = false,
+} = Astro.props;
+---
+
+<ResponsiveHeaderAndSidebarTemp
+  title={title || Consts.SITE_TITLE}
+  description={description || Consts.SITE_DESCRIPTION}
+  sidebarWidth={noScrollSide ? "100px" : "300px"}
+  sourceColor={sourceColor}
+  noScrollSide={noScrollSide}
+>
+  <Fragment slot="side">
+    {
+      navigations.site.map((nav) => (
+        <RailLink iconName={nav.iconName} name={nav.name} href={nav.href} />
+      ))
+    }
+  </Fragment>
+
+  <slot name="side-page-nav" slot="side-scroll-view">
+    {
+      navigations.page &&
+        navigations.page.map((nav) => (
+          <div class="page-nav text-sm flex flex-col flex-nowrap items-stretch">
+            <div class="text-xs pb-6 pt-4">{nav.category}</div>
+            {nav.navigations.map((link) => (
+              <a class="page-nav-item" href={link.href}>
+                <s-ripple class="w-full h-full nav-ripple">
+                  {link.name}
+                </s-ripple>
+              </a>
+            ))}
+          </div>
+        ))
+    }
+  </slot>
+
+  <Fragment slot="side-content-float-mode">
+    <SideTabs onePageMode={noScrollSide} class="side-content-float-mode" client:load>
+      <div
+        class="mt-5 site-nav text-xl flex flex-col flex-nowrap items-stretch"
+        slot="start"
+      >
+        {
+          navigations.site.map((nav) => (
+            <a href={nav.href} class="site-nav-item">
+              <s-ripple class="w-full h-full nav-ripple">{nav.name}</s-ripple>
+            </a>
+          ))
+        }
+      </div>
+      <div slot="end">
+        <slot name="side-page-nav-mobile" />
+        {
+          navigations.page &&
+            navigations.page.map((nav) => (
+              <div class="page-nav text-sm flex flex-col flex-nowrap items-stretch">
+                <div class="tag">{nav.category}</div>
+                {nav.navigations.map((link) => (
+                  <a class="page-nav-item" href={link.href}>
+                    <s-ripple class="w-full h-full nav-ripple">
+                      {link.name}
+                    </s-ripple>
+                  </a>
+                ))}
+              </div>
+            ))
+        }
+      </div>
+    </SideTabs>
+  </Fragment>
+  <slot slot="main" />
+  <Fragment slot="footer">
+    <div class="p-2 pb-6 mb-3 text-center">
+      copyright &copy; {new Date().getFullYear()}
+      <a href="/">Red Panda Blog</a>
+    </div>
+  </Fragment>
+  <Fragment slot="bottom-docker">
+    {
+      navigations.extraNasigation &&
+        navigations.extraNasigation.map((nav) => (
+          <RailLink iconName={nav.iconName} name={nav.name} href={nav.href} />
+        ))
+    }
+  </Fragment>
+</ResponsiveHeaderAndSidebarTemp>
+
+<style lang="less">
+  .list-item {
+    width: 100%;
+    padding: 12px;
+    padding-left: 2rem;
+    border-radius: 9999px;
+  }
+  .page-nav {
+    &-item {
+      margin-inline: 0.2rem;
+      margin-block: 0.75rem;
+    }
+  }
+  .nav-ripple {
+    padding: 12px;
+    padding-left: 2rem;
+    border-radius: 9999px;
+  }
+  body {
+    background-color: var(--s-color-surface);
+    color: var(--s-color-on-surface);
+  }
+</style>

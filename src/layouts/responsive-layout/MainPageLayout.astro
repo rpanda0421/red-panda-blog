@@ -1,0 +1,50 @@
+---
+import BasePageLayout, { type MenuPropObject } from "./BasePageLayout.astro";
+import BlogListItem from "@components/content/BlogListItem.astro";
+
+const { navigations, title, description, posts } = Astro.props;
+
+interface Props {
+  posts: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    updatedDate?: Date;
+    slug: string;
+    cover: {
+      src: string;
+      width: number;
+      height: number;
+      format: "png" | "jpg" | "jpeg" | "tiff" | "webp" | "gif" | "svg" | "avif";
+    };
+  }[];
+  navigations: MenuPropObject;
+  title?: string;
+  description?: string;
+}
+const _posts = [...posts];
+const bannerPost = _posts.shift();
+---
+
+<BasePageLayout
+  title={title}
+  description={description}
+  navigations={navigations}
+>
+  <div class="main-content flex flex-col items-center posts-content p-3 pb-12">
+    {bannerPost && <BlogListItem blogDate={bannerPost} type="big" />}
+    <div
+      class="mt-4 mb-4 posts-list flex flex-row flex-wrap gap-4 justify-center p-4"
+    >
+      {_posts.map((post) => <BlogListItem blogDate={post} type="medium" />)}
+    </div>
+  </div>
+</BasePageLayout>
+
+<style>
+  .main-content {
+    max-width: 100%;
+    width: 1171px;
+    padding-inline-start: 1rem;
+  }
+</style>

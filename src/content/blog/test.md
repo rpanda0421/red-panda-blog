@@ -2,6 +2,7 @@
 title: '测试md显示样式的demo'
 description: '测试文章，用于development'
 pubDate: '2024-5-11'
+cover: './blog-placeholder-1.jpg'
 ---
 
 # Markdown: Syntax

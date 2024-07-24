@@ -1,0 +1,7 @@
+{
+    "css.autoValidation": "Save",
+    "css.styleSheets": [
+        "src/**/*.css"
+    ],
+    "editor.tabSize": 2,
+}

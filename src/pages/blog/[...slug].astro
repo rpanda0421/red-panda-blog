@@ -52,7 +52,7 @@ const color = await getColorFromImage(post.data.cover.fsPath)
 		{
 			filteredHeadings.map((h) => (
 				<a
-					class="text-sm w-full"
+					class="text-sm"
 					class:list={{ "pl-3": h.depth === 2, "pl-6": h.depth === 3 }}
 					href={`${Astro.url.pathname}#${h.slug}`}
 				>
@@ -91,11 +91,7 @@ const color = await getColorFromImage(post.data.cover.fsPath)
 	.blog-wrapper {
 		max-width: 100%;
 		width: 768px;
-		margin-inline-start: 6.67rem;
-		@media screen and (max-width: 960px) {
-			padding: 8px;
-			margin-inline-start: 0px;
-		}
+		padding: 12px;
 	}
 	img {
 		margin-top: 1rem;

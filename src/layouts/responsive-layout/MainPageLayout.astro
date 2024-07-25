@@ -34,7 +34,7 @@ const bannerPost = _posts.shift();
   <div class="main-content flex flex-col items-center posts-content p-3 pb-12">
     {bannerPost && <BlogListItem blogDate={bannerPost} type="big" />}
     <div
-      class="mt-4 mb-4 posts-list flex flex-row flex-wrap gap-4 justify-center p-4"
+      class="post-list-container"
     >
       {_posts.map((post) => <BlogListItem blogDate={post} type="medium" />)}
     </div>
@@ -46,5 +46,15 @@ const bannerPost = _posts.shift();
     max-width: 100%;
     width: 1171px;
     padding-inline-start: 1rem;
+  }
+  .post-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(277px, 1fr));
+    align-content: space-around;
+    justify-content: space-around;
+    gap: 2%;
+    max-width: 100%;
+    width: 100%;
+    /* overflow: hidden; */
   }
 </style>

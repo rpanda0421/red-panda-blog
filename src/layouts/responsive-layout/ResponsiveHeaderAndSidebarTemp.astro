@@ -19,8 +19,14 @@ interface Props {
   noScrollSide?: boolean;
 }
 
-const { title, description, sidebarWidth, sourceColor='#009688', noScrollSide=false } = Astro.props;
-const sDrawerFold = 840;
+const {
+  title,
+  description,
+  sidebarWidth,
+  sourceColor = "#009688",
+  noScrollSide = false,
+} = Astro.props;
+const sDrawerFold = 768;
 
 const bodyStyles = generateThemes(sourceColor);
 const bodyStyle = bodyStyles.length > 0 ? bodyStyles[0] : "";
@@ -85,21 +91,26 @@ const bodyStyle = bodyStyles.length > 0 ? bodyStyles[0] : "";
       lang="less"
       define:vars={{ sidebarWidth, sDrawerFold: sDrawerFold + "px" }}
     >
+      @sm: 640px;
+      @md: 768px;
+      @lg: 1024px;
+      @xl: 1280px;
+      @2xl: 1536px;
       .side-nav-container {
         width: var(--sidebarWidth);
-      background-color: var(--s-color-surface-container-high);
-        @media screen and (max-width: 840px) {
+        background-color: var(--s-color-surface-container-high);
+        @media screen and (max-width: @sm) {
           width: 100%;
         }
       }
       .side-content {
-        @media screen and (max-width: 840px) {
+        @media screen and (max-width: @md) {
           display: none;
         }
         display: flex;
       }
       .side-content-float-mode {
-        @media screen and (max-width: 840px) {
+        @media screen and (max-width: @md) {
           display: flex;
         }
         display: none;
@@ -115,7 +126,7 @@ const bodyStyle = bodyStyles.length > 0 ? bodyStyles[0] : "";
           background-color: var(--s-color-surface-container-high);
           width: 100%;
         }
-        @media screen and (max-width: 673px) {
+        @media screen and (max-width: @sm) {
           display: flex;
         }
       }
@@ -129,7 +140,7 @@ const bodyStyle = bodyStyles.length > 0 ? bodyStyles[0] : "";
         max-width: 100%;
         border-radius: 17.7px;
         background-color: var(--s-color-surface-container-lowest);
-        @media screen and (max-width: 840px) {
+        @media screen and (max-width: @sm) {
           padding-bottom: 90px;
         }
       }

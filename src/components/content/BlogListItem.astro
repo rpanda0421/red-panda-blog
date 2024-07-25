@@ -73,12 +73,14 @@ const { type = "medium", blogDate } = Astro.props;
 
     &--big {
       flex-direction: row-reverse;
-      flex-wrap: nowrap;
       width: 100%;
+      flex-wrap: wrap;
       justify-content: space-around;
       align-items: start;
       color: var(--md-sys-color-on-surface);
+      gap: 2rem;
       margin: 8px;
+      padding: 8px;
       padding-block: 2rem;
       .title {
         color: var(--s-color-primary);
@@ -86,23 +88,25 @@ const { type = "medium", blogDate } = Astro.props;
       p {
         padding-inline-start: 2rem;
         margin-top: 2rem;
-        /* font-size: 12px; */
       }
       .img-container {
         flex-basis: 27%;
+        min-width: 277px;
+        padding-inline: 1rem;
         position: relative;
+        flex-grow: 1;
       }
       img {
         object-fit: cover;
         border-radius: 999px;
         width: 100%;
-        // height: %;
       }
       .content {
         position: relative;
-        // padding: 16px 16px calc(16px + 1rem) 16px;
         padding-bottom: 3.5rem;
         flex-basis: 50%;
+        min-width: 345px;
+        flex-grow: 1;
       }
 
       .ship {
@@ -145,28 +149,13 @@ const { type = "medium", blogDate } = Astro.props;
         width: 5rem;
         height: 5rem;
       }
-      @media screen and (max-width: 989px) {
-        flex-wrap: wrap;
-        padding: 8px;
-        :is(.content, .img-container) {
-          flex-basis: 100%;
-        }
-        .img-container {
-          max-height: 233px;
-          img {
-            max-height: 233px;
-          }
-          margin-bottom: 2rem;
-        }
-      }
     }
     &--medium {
       flex-direction: column;
       flex-wrap: nowrap;
       overflow: hidden;
-      width: 317px;
       max-width: 100%;
-      height: 321px;
+      aspect-ratio: 6 / 6;
       .content {
         padding-block: 2rem;
         padding-inline: 2rem;
@@ -180,10 +169,8 @@ const { type = "medium", blogDate } = Astro.props;
         border-top-left-radius: 17.5px;
         border-top-right-radius: 17.5px;
         overflow: hidden;
-        height: 142px;
         img {
           object-fit: cover;
-          height: 100%;
           width: 100%;
           transition: scale, 0.3s;
         }
@@ -214,16 +201,6 @@ const { type = "medium", blogDate } = Astro.props;
           color: white;
           width: 24px;
           height: 24px;
-        }
-      }
-      @media screen and (max-width: 989px) {
-        width: 100%;
-        height: 321px;
-        .img-container {
-          height: 176px;
-        }
-        .title {
-          margin-block-end: 0.75rem;
         }
       }
     }

@@ -2,7 +2,7 @@
 <template>
   <div class="tabs w-full h-full">
     <div class="tabs-nav-wrap flex flex-row rounded-full">
-      <div class="tabs-tab rounded-full text-center" :class="{ active: activeKey == index }"
+      <div class="tabs-tab rounded-full text-center text-xl font-bold" :class="{ active: activeKey == index }"
         v-for="(item, index) in navList" @click="updateActiveKey(index)" :key="index">
         {{ item.label }}
       </div>
